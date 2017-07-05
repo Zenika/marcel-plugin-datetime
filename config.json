@@ -1,0 +1,15 @@
+{
+  "name": "Datetime",
+  "description": "Displays the date and the current time",
+  "elementName": "marcel-plugin-datetime",
+  "files": ["index.html"],
+  "icon": "",
+  "props": [
+    {
+      "name": "server_url",
+      "description": "Url of the server that send the birthdates",
+      "type": "string",
+      "defaultValue": "http://localhost:5000"
+    }
+  ]
+}

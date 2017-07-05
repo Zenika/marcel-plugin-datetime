@@ -1,0 +1,19 @@
+{
+  "name": "marcel-plugin-datetime",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node build.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-insert-lines": "0.0.4",
+    "marcel-builder": "0.0.1",
+    "merge-stream": "^1.0.1",
+    "polymer-build": "^1.6.0"
+  }
+}
