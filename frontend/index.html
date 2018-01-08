@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>marcel-plugin-etherpad-board</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <script src="./marcel.js"></script>
+</head>
+
+<body>
+
+  <div id="container" class="container">
+    <span class="time">
+      <span id="hour"></span>
+      <span class="blink_me">:</span>
+      <span id="minutes"></span>
+    </span>
+    <span class="date">
+      <span id="day"></span>
+      <span id="month"></span>
+      <span id="year"></span>
+    </span>
+  </div>
+
+  <script>
+    const leftPad = number => ('0' + number).slice(-2)
+
+    class Clock extends Marcel.Plugin {
+      constructor() {
+        super()
+        this.container = document.getElementById('container')
+        this.hour = document.getElementById('hour')
+        this.minutes = document.getElementById('minutes')
+        this.day = document.getElementById('day')
+        this.month = document.getElementById('month')
+        this.year = document.getElementById('year')
+
+        this.updateClock()
+        setTimeout(() => this.updateClock(), 10 * 1000)
+      }
+
+      updateClock() {
+        const now = new Date()
+        console.log(this.state, now)
+
+        if (this.state.lastMinute === now.getMinutes()) return
+
+        const date = {
+          minutes: leftPad(now.getMinutes()),
+          hour: leftPad(now.getHours()),
+
+          day: leftPad(now.toLocaleString('fr', { day: '2-digit' })),
+          year: now.toLocaleString('fr', { year: 'numeric' }),
+          month: now.toLocaleString('fr', { month: 'long' }),
+        }
+
+        console.log(this.state)
+
+        this.setState({ date, lastMinute: now.getMinutes() })
+      }
+
+      render() {
+        const { stylesvar = {} } = this.props
+        const { date } = this.state
+
+        if (stylesvar['primary-color']) this.container.style.color = stylesvar['primary-color']
+        if (stylesvar['font-family']) this.container.style.fontFamily = stylesvar['font-family']
+
+        this.hour.innerText = date.hour
+        this.minutes.innerText = date.minutes
+        this.day.innerText = date.day
+        this.month.innerText = date.month
+        this.year.innerText = date.year
+      }
+    }
+
+    const instance = new Clock()
+  </script>
+</body>
+
+</html>

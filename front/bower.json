@@ -1,7 +1,0 @@
-{
-  "name": "marcel-plugin-datetime",
-  "main": "index.html",
-  "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0"
-  }
-}
