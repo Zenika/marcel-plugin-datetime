@@ -37,7 +37,7 @@
         this.year = document.getElementById('year')
 
         this.updateClock()
-        setTimeout(() => this.updateClock(), 10 * 1000)
+        setInterval(() => this.updateClock(), 10 * 1000)
       }
 
       updateClock() {
