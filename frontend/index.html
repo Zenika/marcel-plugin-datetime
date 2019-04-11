@@ -60,11 +60,13 @@
           period = 'soir'
         }
 
+        const language = navigator.language || 'fr'
+
         const datetime = {
           minutes: String(now.getMinutes()).padStart(2, '0'),
           hour: String(now.getHours()).padStart(2, '0'),
           period,
-          date: capitalize(now.toLocaleString('fr', { weekday: 'long', month: 'long', day: '2-digit' })),
+          date: capitalize(now.toLocaleString(language, { weekday: 'long', month: 'long', day: '2-digit' })),
         }
 
         this.setState({ datetime, lastMinute: now.getMinutes() })
