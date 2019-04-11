@@ -26,8 +26,6 @@
   </div>
 
   <script>
-    const leftPad = number => ('0' + number).slice(-2)
-
     const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
 
     class Clock extends Marcel.Plugin {
@@ -63,8 +61,8 @@
         }
 
         const datetime = {
-          minutes: leftPad(now.getMinutes()),
-          hour: leftPad(now.getHours()),
+          minutes: String(now.getMinutes()).padStart(2, '0'),
+          hour: String(now.getHours()).padStart(2, '0'),
           period,
           date: capitalize(now.toLocaleString('fr', { weekday: 'long', month: 'long', day: '2-digit' })),
         }
