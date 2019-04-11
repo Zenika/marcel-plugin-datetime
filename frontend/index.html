@@ -5,26 +5,28 @@
   <meta charset="utf-8">
   <title>marcel-plugin-etherpad-board</title>
   <link rel="stylesheet" type="text/css" href="styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
   <script src="./marcel.js"></script>
 </head>
 
 <body>
 
   <div id="container" class="container">
-    <span class="time">
+    <div class="date">
+      <span id="date"></span>
+    </div>
+    <div class="period">
+      <span id="period"></span>
+    </div>
+    <div class="time">
       <span id="hour"></span>
-      <span class="blink_me">:</span>
+      <span>:</span>
       <span id="minutes"></span>
-    </span>
-    <span class="date">
-      <span id="day"></span>
-      <span id="month"></span>
-      <span id="year"></span>
-    </span>
+    </div>
   </div>
 
   <script>
-    const leftPad = number => ('0' + number).slice(-2)
+    const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
 
     class Clock extends Marcel.Plugin {
       constructor() {
@@ -32,9 +34,8 @@
         this.container = document.getElementById('container')
         this.hour = document.getElementById('hour')
         this.minutes = document.getElementById('minutes')
-        this.day = document.getElementById('day')
-        this.month = document.getElementById('month')
-        this.year = document.getElementById('year')
+        this.period = document.getElementById('period')
+        this.date = document.getElementById('date')
 
         this.updateClock()
         setInterval(() => this.updateClock(), 10 * 1000)
@@ -42,36 +43,46 @@
 
       updateClock() {
         const now = new Date()
-        console.log(this.state, now)
 
         if (this.state.lastMinute === now.getMinutes()) return
 
-        const date = {
-          minutes: leftPad(now.getMinutes()),
-          hour: leftPad(now.getHours()),
-
-          day: leftPad(now.toLocaleString('fr', { day: '2-digit' })),
-          year: now.toLocaleString('fr', { year: 'numeric' }),
-          month: now.toLocaleString('fr', { month: 'long' }),
+        const hour = now.getHours()
+        let period
+        if (hour >= 22 || hour < 6)  {
+          period = 'nuit'
+        } else if (hour < 12)  {
+          period = 'matin'
+        } else if (hour < 14)  {
+          period = 'midi'
+        } else if (hour < 18)  {
+          period = 'après-midi'
+        } else if (hour < 22)  {
+          period = 'soir'
         }
 
-        console.log(this.state)
+        const language = navigator.language || 'fr'
 
-        this.setState({ date, lastMinute: now.getMinutes() })
+        const datetime = {
+          minutes: String(now.getMinutes()).padStart(2, '0'),
+          hour: String(now.getHours()).padStart(2, '0'),
+          period,
+          date: capitalize(now.toLocaleString(language, { weekday: 'long', month: 'long', day: '2-digit' })),
+        }
+
+        this.setState({ datetime, lastMinute: now.getMinutes() })
       }
 
       render() {
         const { stylesvar = {} } = this.props
-        const { date } = this.state
+        const { datetime } = this.state
 
-        if (stylesvar['primary-color']) this.container.style.color = stylesvar['primary-color']
-        if (stylesvar['font-family']) this.container.style.fontFamily = stylesvar['font-family']
+        if (stylesvar['primary-color']) this.container.style.background = stylesvar['primary-color']
+        if (stylesvar['background-color']) this.container.style.color = stylesvar['background-color']
 
-        this.hour.innerText = date.hour
-        this.minutes.innerText = date.minutes
-        this.day.innerText = date.day
-        this.month.innerText = date.month
-        this.year.innerText = date.year
+        this.hour.innerText = datetime.hour
+        this.minutes.innerText = datetime.minutes
+        this.period.innerText = datetime.period
+        this.date.innerText = datetime.date
       }
     }
 
