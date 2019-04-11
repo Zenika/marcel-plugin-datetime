@@ -50,16 +50,16 @@
 
         const hour = now.getHours()
         let period
-        if (hour >= 6 && hour < 12)  {
-          period = 'matin'
-        } else if (hour >= 12 && hour < 14)  {
-          period = 'midi'
-        } else if (hour >= 14 && hour < 18)  {
-          period = 'après-midi'
-        } else if (hour >= 18 && hour < 22)  {
-          period = 'soir'
-        } else if (hour >= 22 && hour < 6)  {
+        if (hour >= 22 || hour < 6)  {
           period = 'nuit'
+        } else if (hour < 12)  {
+          period = 'matin'
+        } else if (hour < 14)  {
+          period = 'midi'
+        } else if (hour < 18)  {
+          period = 'après-midi'
+        } else if (hour < 22)  {
+          period = 'soir'
         }
 
         const datetime = {
