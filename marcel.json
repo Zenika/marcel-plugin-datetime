@@ -1,0 +1,7 @@
+{
+  "eltName": "marcel-plugin-datetime",
+  "name": "Clock",
+  "frontend": {
+    "props": []
+  }
+}
